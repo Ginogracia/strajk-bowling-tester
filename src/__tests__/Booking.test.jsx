@@ -88,7 +88,7 @@ test("shows error when trying to book with all fields empty", async () => {
 
 test("shows error when one required field (lanes) is missing", async () => {
   // Covers (VG):
-  // - Error message for missing fields should appear for different field combinations,
+  //   Error message for missing fields should appear for different field combinations,
   //   here: lanes missing but date, time and players are filled.
 
   const user = userEvent.setup();
@@ -103,7 +103,6 @@ test("shows error when one required field (lanes) is missing", async () => {
   await user.type(dateInput, "2025-12-24");
   await user.type(timeInput, "18:00");
   await user.type(peopleInput, "4");
-  // leave lanesInput empty
 
   await user.click(submitButton);
 
