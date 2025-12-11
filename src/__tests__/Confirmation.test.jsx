@@ -1,5 +1,3 @@
-// src/__tests__/Confirmation.test.jsx
-
 // Covers user story:
 // - Navigate to confirmation view and see booking if it exists (from state or sessionStorage).
 // - If no booking exists, show "Inga bokning gjord!".
@@ -23,7 +21,7 @@ function getInputByLabel(labelRegex) {
 }
 
 test("shows confirmation details when booking is provided via router state", () => {
-  // Covers (G):
+  // Covers:
   // - "Användaren ska kunna navigera från bokningsvyn till bekräftelsevyn när bokningen är klar."
   // - "Systemet ska generera ett bokningsnummer och visa detta."
   // - "Systemet ska beräkna och visa den totala summan."
@@ -57,7 +55,7 @@ test("shows confirmation details when booking is provided via router state", () 
 });
 
 test("reads confirmation from sessionStorage when no state is provided", () => {
-  // Covers (G):
+  // Cover:
   // - "Om användaren navigerar till bekräftelsevyn och det finns en bokning sparad
   //    i session storage ska denna visas."
 
@@ -84,7 +82,7 @@ test("reads confirmation from sessionStorage when no state is provided", () => {
 });
 
 test("shows 'Inga bokning gjord!' when there is no booking in state or sessionStorage", () => {
-  // Covers (G):
+  // Covers :
   // - "Om användaren navigerar till bekräftelsevyn och ingen bokning är gjord
   //    eller finns i session storage ska texten 'Ingen bokning gjord' visas."
   //   (implementation text is 'Inga bokning gjord!', we test what the code renders.)

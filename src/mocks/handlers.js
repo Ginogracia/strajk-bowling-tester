@@ -1,5 +1,3 @@
-// MSW handlers for mocking the API
-
 import { http, HttpResponse } from "msw";
 
 const BOOKING_URL =

@@ -1,11 +1,8 @@
-// src/__tests__/Booking.test.jsx
-
-// Covers multiple user stories:
-// - Booking date/time/people/lanes validation (G + VG)
-// - Shoe size selection, matching people & shoes (G + VG)
-// - Removing shoe fields (G + VG)
-// - Completing booking, saving confirmation, navigating to confirmation (G)
-// Each individual test has a comment explaining its specific criteria.
+// user stories:
+// - Booking date/time/people/lanes validation
+// - Shoe size selection, matching people & shoes
+// - Removing shoe fields
+// - Completing booking, saving confirmation, navigating to confirmation
 
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -70,7 +67,7 @@ async function fillShoeSize(index, size) {
 }
 
 test("shows error when trying to book with all fields empty", async () => {
-  // Covers (VG + G):
+  // Covers:
   // - If the user does not fill in date, time, players or lanes,
   //   system shows error message "Alla fälten måste vara ifyllda".
 
@@ -87,7 +84,7 @@ test("shows error when trying to book with all fields empty", async () => {
 });
 
 test("shows error when one required field (lanes) is missing", async () => {
-  // Covers (VG):
+  // Covers:
   //   Error message for missing fields should appear for different field combinations,
   //   here: lanes missing but date, time and players are filled.
 
@@ -112,7 +109,7 @@ test("shows error when one required field (lanes) is missing", async () => {
 });
 
 test("shows error when number of players and number of shoes do not match", async () => {
-  // Covers (VG):
+  // Covers:
   // - "Om antalet personer och skor inte matchas ska ett felmeddelande visas".
 
   const user = userEvent.setup();
@@ -137,7 +134,7 @@ test("shows error when number of players and number of shoes do not match", asyn
 });
 
 test("shows error when not all shoe sizes are filled", async () => {
-  // Covers (VG):
+  // Covers:
   // - "Om användaren försöker slutföra bokningen utan att ange skostorlek
   //    för en spelare som har valt att boka skor, ska ett felmeddelande visas."
   // - "Alla skor måste vara ifyllda".
@@ -167,7 +164,7 @@ test("shows error when not all shoe sizes are filled", async () => {
 });
 
 test("shows error when there are more than 4 players per lane", async () => {
-  // Covers (VG):
+  // Covers:
   // - "Det får max vara 4 spelare per bana" -> show error if exceeded.
 
   const user = userEvent.setup();
@@ -182,11 +179,9 @@ test("shows error when there are more than 4 players per lane", async () => {
   await user.type(dateInput, "2025-12-24");
   await user.type(timeInput, "18:00");
 
-  // 1 lane, 5 players -> violates 4 per lane rule
   await user.type(peopleInput, "5");
   await user.type(lanesInput, "1");
 
-  // Add 5 shoe fields and fill them so other validations pass
   await addShoeFields(5);
   for (let i = 1; i <= 5; i++) {
     await fillShoeSize(i, String(40 + i)); // "41", "42", ...
@@ -200,7 +195,7 @@ test("shows error when there are more than 4 players per lane", async () => {
 });
 
 test("allows adding a shoe field when clicking the + button", async () => {
-  // Covers (G):
+  // Covers:
   // - "Användaren ska kunna ange skostorlek för varje spelare."
   // - Ability to add shoe inputs dynamically with the + button.
 
@@ -217,7 +212,7 @@ test("allows adding a shoe field when clicking the + button", async () => {
 });
 
 test("allows removing a shoe field with the - button", async () => {
-  // Covers (G):
+  // Covers:
   // - "Användaren ska kunna ta bort ett tidigare valt fält för skostorlek genom att klicka på en '-'-knapp."
   // - "Om användaren tar bort skostorleken ska systemet inte inkludera den spelaren i skorantalet."
 
@@ -239,7 +234,7 @@ test("allows removing a shoe field with the - button", async () => {
 });
 
 test("successful booking sends data, saves confirmation and navigates to confirmation view", async () => {
-  // Covers (G):
+  // Covers:
   // - User can complete booking by clicking "strIIIIIike!"
   // - System generates booking number and total price (from mocked response).
   // - System navigates from booking view to confirmation view.
@@ -252,25 +247,22 @@ test("successful booking sends data, saves confirmation and navigates to confirm
 
   await fillValidBookingForm();
 
-  // People = 4, add 4 shoes with sizes so all validations pass
   const peopleInput = getInputByLabel(/number of awesome bowlers/i);
   await user.clear(peopleInput);
   await user.type(peopleInput, "4");
 
   await addShoeFields(4);
   for (let i = 1; i <= 4; i++) {
-    await fillShoeSize(i, String(40 + i)); // "41", "42", "43", "44"
+    await fillShoeSize(i, String(40 + i)); 
   }
 
   const submitButton = screen.getByRole("button", { name: /striiiiiike!/i });
   await user.click(submitButton);
 
-  // Wait until we are in the confirmation view
   await waitFor(() => {
     expect(screen.getByText(/booking number/i)).toBeInTheDocument();
   });
 
-  // Now use getInputByLabel helper for Confirmation inputs
   const whenInput = getInputByLabel(/when/i);
   const whoInput = getInputByLabel(/who/i);
   const lanesInput = getInputByLabel(/lanes/i);
@@ -292,7 +284,7 @@ test("successful booking sends data, saves confirmation and navigates to confirm
 });
 
 test("removed shoe field is not included in the booking payload", async () => {
-  // Covers (G + Shoes removal story):
+  // Covers:
   //   When a shoe field is removed, that player is not included in the shoes array
   //   sent to the server, and thus not part of the shoe count/price.
 
